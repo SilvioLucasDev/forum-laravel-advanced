@@ -31,7 +31,10 @@
         "psr-4": {
             "Tests\\": "tests/"
         },
-        "files": ["app/Helpers/functions.php"]
+        "files": [
+            "app/Helpers/EnumHelper.php",
+            "app/Helpers/PaginationHelper.php"
+        ]
     },
     "scripts": {
         "post-autoload-dump": [

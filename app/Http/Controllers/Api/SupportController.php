@@ -29,16 +29,10 @@ class SupportController extends Controller
             $request->get('filter', null),
         );
 
-        return SupportResource::collection($supports->items())->additional([
-            'meta' => [
-                'total' => $supports->total(),
-                'is_first_page' => $supports->isFirstPage(),
-                'is_last_page' => $supports->isLastPage(),
-                'current_page' => $supports->currentPage(),
-                'next_page' => $supports->getNumberNextPage(),
-                'previous_page' => $supports->getNumberPreviousPage(),
-            ],
-        ]);
+        return SupportResource::collection($supports->items())
+            ->additional([
+                'meta' => pagination($supports),
+            ]);
     }
 
     /**
