@@ -22,8 +22,6 @@ Route::get('/supports/{id}/edit', [SupportController::class, 'edit'])->name('sup
 Route::put('/supports/{id}', [SupportController::class, 'update'])->name('supports.update');
 Route::delete('/supports/{id}', [SupportController::class, 'destroy'])->name('supports.destroy');
 
-// Route::get('/contacts', [SupportController::class, 'contact'])->name('contacts.index');
-
 Route::get('/', function () {
     return view('welcome');
 });
