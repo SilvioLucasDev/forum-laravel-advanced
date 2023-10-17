@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Dtos\Supports\CreateSupportDTO;
+use App\Dtos\Supports\UpdateSupportDTO;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupportRequest;
 use App\Http\Resources\SupportResource;
@@ -20,9 +21,24 @@ class SupportController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        $supports = $this->supportService->paginate(
+            $request->get('page', 1),
+            $request->get('per_page', 1),
+            $request->get('filter', null),
+        );
+
+        return SupportResource::collection($supports->items())->additional([
+            'meta' => [
+                'total' => $supports->total(),
+                'is_first_page' => $supports->isFirstPage(),
+                'is_last_page' => $supports->isLastPage(),
+                'current_page' => $supports->currentPage(),
+                'next_page' => $supports->getNumberNextPage(),
+                'previous_page' => $supports->getNumberPreviousPage(),
+            ],
+        ]);
     }
 
     /**
@@ -40,7 +56,8 @@ class SupportController extends Controller
      */
     public function show(string $id)
     {
-        if (! $support = $this->supportService->findOne($id)) {
+        $support = $this->supportService->findOne($id);
+        if (! $support) {
             return response()->json([
                 'error' => 'Not Found',
             ], Response::HTTP_NOT_FOUND);
@@ -52,9 +69,16 @@ class SupportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(StoreUpdateSupportRequest $request)
     {
-        //
+        $support = $this->supportService->update(UpdateSupportDTO::makeFromRequest($request));
+        if (! $support) {
+            return response()->json([
+                'error' => 'Not Found',
+            ], Response::HTTP_NOT_FOUND);
+        }
+
+        return new SupportResource($support);
     }
 
     /**
@@ -62,7 +86,8 @@ class SupportController extends Controller
      */
     public function destroy(string $id)
     {
-        if (! $this->supportService->findOne($id)) {
+        $support = $this->supportService->findOne($id);
+        if (! $support) {
             return response()->json([
                 'error' => 'Not Found',
             ], Response::HTTP_NOT_FOUND);
