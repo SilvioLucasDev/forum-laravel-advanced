@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Dtos\CreateSupportDTO;
 use App\Dtos\UpdateSupportDTO;
+use App\Repositories\PaginationInterface;
 use App\Repositories\SupportRepositoryInterface;
 use stdClass;
 
@@ -18,7 +19,7 @@ class SupportService
         int $page,
         int $totalPerPage,
         ?string $filter
-    ) {
+    ): PaginationInterface {
         return $this->repository->paginate(
             $page,
             $totalPerPage,
