@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreUpdateSupportRequest;
 use App\Models\Support;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class SupportController extends Controller
 {
@@ -24,9 +24,9 @@ class SupportController extends Controller
         return view('admin.supports.create');
     }
 
-    public function store(Request $request, Support $support): RedirectResponse
+    public function store(StoreUpdateSupportRequest $request, Support $support): RedirectResponse
     {
-        $data = $request->only(['subject', 'body']);
+        $data = $request->validated();
         $data['status'] = 'a';
         $support->create($data);
 
@@ -55,12 +55,12 @@ class SupportController extends Controller
         ]);
     }
 
-    public function update(Request $request, Support $support, string|int $id): RedirectResponse
+    public function update(StoreUpdateSupportRequest $request, Support $support, string|int $id): RedirectResponse
     {
         if (! $support = $support->find($id)) {
             return back();
         }
-        $data = $request->only(['subject', 'body']);
+        $data = $request->validated();
         $support->update($data);
 
         return redirect()->route('supports.index');
