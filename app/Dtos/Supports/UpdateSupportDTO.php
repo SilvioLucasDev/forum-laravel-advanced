@@ -18,7 +18,7 @@ class UpdateSupportDTO
     public static function makeFromRequest(StoreUpdateSupportRequest $request)
     {
         return new self(
-            $request->id,
+            $request->id ?? $request->support,
             $request->subject,
             SupportStatusEnum::A,
             $request->body,
