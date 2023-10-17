@@ -14,6 +14,18 @@ class SupportService
     ) {
     }
 
+    public function paginate(
+        int $page,
+        int $totalPerPage,
+        ?string $filter
+    ) {
+        return $this->repository->paginate(
+            $page,
+            $totalPerPage,
+            $filter
+        );
+    }
+
     public function getAll(?string $filter): array
     {
         return $this->repository->getAll($filter);

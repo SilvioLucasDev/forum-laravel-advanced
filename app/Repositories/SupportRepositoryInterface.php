@@ -8,6 +8,8 @@ use stdClass;
 
 interface SupportRepositoryInterface
 {
+    public function paginate(int $page, int $totalPerPage, ?string $filter): PaginationInterface;
+
     public function getAll(?string $filter): array;
 
     public function findOne(string $id): ?stdClass;
