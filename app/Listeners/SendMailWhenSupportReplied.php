@@ -4,9 +4,10 @@ namespace App\Listeners;
 
 use App\Events\SupportRepliedEvent;
 use App\Mail\SupportRepliedMail;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Support\Facades\Mail;
 
-class SendMailWhenSupportReplied
+class SendMailWhenSupportReplied implements ShouldQueue
 {
     /**
      * Create the event listener.
