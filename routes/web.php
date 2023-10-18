@@ -39,6 +39,7 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/supports/{id}/replies', [ReplySupportController::class, 'index'])->name('replies.index');
     Route::post('/supports/{id}/replies', [ReplySupportController::class, 'store'])->name('replies.store');
+    Route::delete('/supports/{id}/replies/{reply}', [ReplySupportController::class, 'destroy'])->name('replies.destroy');
 });
 
 require __DIR__.'/auth.php';

@@ -27,4 +27,9 @@ class ReplySupportRepository implements ReplySupportRepositoryInterface
 
         return (object) $reply->toArray();
     }
+
+    public function delete(string $id): void
+    {
+        $this->replySupportModel->findOrFail($id)->delete();
+    }
 }
