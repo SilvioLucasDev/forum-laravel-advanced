@@ -8,7 +8,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreUpdateSupportRequest;
 use App\Http\Resources\SupportResource;
 use App\Services\SupportService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Http\Response;
 
 class SupportController extends Controller
@@ -21,11 +23,11 @@ class SupportController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): JsonResource
     {
         $supports = $this->supportService->paginate(
             $request->get('page', 1),
-            $request->get('per_page', 1),
+            $request->get('per_page', 10),
             $request->get('filter', null),
         );
 
@@ -38,7 +40,7 @@ class SupportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateSupportRequest $request)
+    public function store(StoreUpdateSupportRequest $request): JsonResource
     {
         $support = $this->supportService->create(CreateSupportDTO::makeFromRequest($request));
 
@@ -48,7 +50,7 @@ class SupportController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(string $id)
+    public function show(string $id): JsonResource|JsonResponse
     {
         $support = $this->supportService->findOne($id);
         if (! $support) {
@@ -63,7 +65,7 @@ class SupportController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(StoreUpdateSupportRequest $request)
+    public function update(StoreUpdateSupportRequest $request): JsonResource|JsonResponse
     {
         $support = $this->supportService->update(UpdateSupportDTO::makeFromRequest($request));
         if (! $support) {
@@ -78,7 +80,7 @@ class SupportController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
+    public function destroy(string $id): JsonResponse
     {
         $support = $this->supportService->findOne($id);
         if (! $support) {
