@@ -12,13 +12,13 @@ use stdClass;
 class SupportRepository implements SupportRepositoryInterface
 {
     public function __construct(
-        protected Support $SupportModel
+        protected Support $supportModel
     ) {
     }
 
     public function paginate(int $page, int $totalPerPage, ?string $filter): PaginationInterface
     {
-        $result = $this->SupportModel->where(function ($query) use ($filter) {
+        $result = $this->supportModel->where(function ($query) use ($filter) {
             if ($filter) {
                 $query->where('subject', $filter);
                 $query->orWhere('body', 'like', "%{$filter}%");
@@ -30,7 +30,7 @@ class SupportRepository implements SupportRepositoryInterface
 
     public function getAll(?string $filter): array
     {
-        return $this->SupportModel->where(function ($query) use ($filter) {
+        return $this->supportModel->where(function ($query) use ($filter) {
             if ($filter) {
                 $query->where('subject', $filter);
                 $query->orWhere('body', 'like', "%{$filter}%");
@@ -40,7 +40,7 @@ class SupportRepository implements SupportRepositoryInterface
 
     public function findOne(string $id): ?stdClass
     {
-        $support = $this->SupportModel->find($id);
+        $support = $this->supportModel->find($id);
         if (! $support) {
             return null;
         }
@@ -50,14 +50,14 @@ class SupportRepository implements SupportRepositoryInterface
 
     public function save(CreateSupportDTO $dto): stdClass
     {
-        $support = $this->SupportModel->create((array) $dto);
+        $support = $this->supportModel->create((array) $dto);
 
         return (object) $support->toArray();
     }
 
     public function update(UpdateSupportDTO $dto): ?stdClass
     {
-        if (! $support = $this->SupportModel->find($dto->id)) {
+        if (! $support = $this->supportModel->find($dto->id)) {
             return null;
         }
         $support->update((array) $dto);
@@ -67,6 +67,6 @@ class SupportRepository implements SupportRepositoryInterface
 
     public function delete(string $id): void
     {
-        $this->SupportModel->findOrFail($id)->delete();
+        $this->supportModel->findOrFail($id)->delete();
     }
 }
