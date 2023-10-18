@@ -34,6 +34,7 @@
         },
         "files": [
             "app/Helpers/EnumHelper.php",
+            "app/Helpers/FormatHelper.php",
             "app/Helpers/PaginationHelper.php"
         ]
     },
