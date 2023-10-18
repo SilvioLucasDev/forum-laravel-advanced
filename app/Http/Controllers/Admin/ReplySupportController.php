@@ -4,11 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 use App\Dtos\Replies\CreateReplyDTO;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreReplySupportRequest;
 use App\Services\ReplySupportService;
 use App\Services\SupportService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 
 class ReplySupportController extends Controller
 {
@@ -31,7 +31,7 @@ class ReplySupportController extends Controller
         ]);
     }
 
-    public function store(Request $request): RedirectResponse
+    public function store(StoreReplySupportRequest $request): RedirectResponse
     {
         $this->replySupportService->create(CreateReplyDTO::makeFromRequest($request));
 
