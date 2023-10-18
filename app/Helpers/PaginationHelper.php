@@ -1,6 +1,6 @@
 <?php
 
-use App\Repositories\PaginationInterface;
+use App\Repositories\Contracts\PaginationInterface;
 
 if (! function_exists('pagination')) {
     function pagination(PaginationInterface $data)

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Repositories;
+namespace App\Repositories\Contracts;
 
 use App\Dtos\Supports\CreateSupportDTO;
 use App\Dtos\Supports\UpdateSupportDTO;

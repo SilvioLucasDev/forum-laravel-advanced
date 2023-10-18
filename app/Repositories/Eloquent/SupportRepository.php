@@ -5,9 +5,8 @@ namespace App\Repositories\Eloquent;
 use App\Dtos\Supports\CreateSupportDTO;
 use App\Dtos\Supports\UpdateSupportDTO;
 use App\Models\Support;
-use App\Repositories\PaginationInterface;
-use App\Repositories\PaginationPresenter;
-use App\Repositories\SupportRepositoryInterface;
+use App\Repositories\Contracts\PaginationInterface;
+use App\Repositories\Contracts\SupportRepositoryInterface;
 use stdClass;
 
 class SupportRepository implements SupportRepositoryInterface
@@ -47,7 +46,6 @@ class SupportRepository implements SupportRepositoryInterface
         }
 
         return (object) $support->toArray();
-
     }
 
     public function save(CreateSupportDTO $dto): stdClass
