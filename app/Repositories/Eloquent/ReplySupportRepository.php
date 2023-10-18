@@ -25,6 +25,7 @@ class ReplySupportRepository implements ReplySupportRepositoryInterface
     public function save(CreateReplyDTO $dto): stdClass
     {
         $reply = $this->replySupportModel->create((array) $dto);
+        $reply->load('user');
 
         return (object) $reply->toArray();
     }

@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Dtos\Replies\CreateReplyDTO;
+use App\Events\SupportRepliedEvent;
 use App\Repositories\Contracts\ReplySupportRepositoryInterface;
 use stdClass;
 
@@ -20,7 +21,10 @@ class ReplySupportService
 
     public function create(CreateReplyDTO $dto): stdClass
     {
-        return $this->repository->save($dto);
+        $support = $this->repository->save($dto);
+        SupportRepliedEvent::dispatch($support);
+
+        return $support;
     }
 
     public function delete(string $id): void
