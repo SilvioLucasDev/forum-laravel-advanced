@@ -46,16 +46,16 @@ class SupportController extends Controller
         return redirect()->route('supports.index')->with('message', 'Cadastrado com sucesso!');
     }
 
-    public function show(string $id): RedirectResponse|View
-    {
-        if (! $support = $this->supportService->findOne($id)) {
-            return back();
-        }
+    // public function show(string $id): RedirectResponse|View
+    // {
+    //     if (! $support = $this->supportService->findOne($id)) {
+    //         return back();
+    //     }
 
-        return view('admin.supports.show', [
-            'support' => $support,
-        ]);
-    }
+    //     return view('admin.supports.show', [
+    //         'support' => $support,
+    //     ]);
+    // }
 
     public function edit(string $id): View
     {

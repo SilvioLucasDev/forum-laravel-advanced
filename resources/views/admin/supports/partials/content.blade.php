@@ -54,7 +54,7 @@
                                         class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg">
                                         Editar
                                     </a>
-                                    <a href="{{ route('supports.show', $support->id) }}"
+                                    <a href="{{ route('replies.index', $support->id) }}"
                                         class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                             stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
