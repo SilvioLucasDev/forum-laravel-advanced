@@ -23,7 +23,7 @@ class SupportController extends Controller
     {
         $supports = $this->supportService->paginate(
             $request->get('page', 1),
-            $request->get('per_page', 1),
+            $request->get('per_page', 10),
             $request->get('filter', null),
         );
         $filters = ['filter' => $request->get('filter', null)];
@@ -43,7 +43,7 @@ class SupportController extends Controller
     {
         $this->supportService->create(CreateSupportDTO::makeFromRequest($request));
 
-        return redirect()->route('supports.index');
+        return redirect()->route('supports.index')->with('message', 'Cadastrado com sucesso!');
     }
 
     public function show(string $id): RedirectResponse|View
@@ -75,13 +75,13 @@ class SupportController extends Controller
             return back();
         }
 
-        return redirect()->route('supports.index');
+        return redirect()->route('supports.index')->with('message', 'Atualizado com sucesso!');
     }
 
     public function destroy(string $id): RedirectResponse
     {
         $this->supportService->delete($id);
 
-        return redirect()->route('supports.index');
+        return redirect()->route('supports.index')->with('message', 'Deletado com sucesso!');
     }
 }
