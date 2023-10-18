@@ -58,6 +58,7 @@
                 @endforelse
 
                 <div class="py-4">
+                    <x-alert />
                     <form action="{{ route('replies.store', $support->id) }}" method="post">
                         @csrf
                         <textarea rows="2" name="content" placeholder="Sua resposta"
