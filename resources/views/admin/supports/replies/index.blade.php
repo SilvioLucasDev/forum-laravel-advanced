@@ -8,14 +8,14 @@
         <div class="md:w-3/5 w-3/4 px-10 flex flex-col gap-2 p-5">
             <div class="flex justify-between">
                 <h1 class="text-lg">Detalhes da Dúvida <b>{{ $support->subject }}</b></h1>
-                {{-- @can('owner', $support->user['id']) --}}
-                <form action="{{ route('supports.destroy', $support->id) }}" method="post">
-                    @csrf()
-                    @method('DELETE')
-                    <button type="submit"
-                        class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">Deletar</button>
-                </form>
-                {{-- @endcan --}}
+                @can('owner', $support->user['id'])
+                    <form action="{{ route('supports.destroy', $support->id) }}" method="post">
+                        @csrf()
+                        @method('DELETE')
+                        <button type="submit"
+                            class="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">Deletar</button>
+                    </form>
+                @endcan
             </div>
             <ul>
                 <li>Status: <x-status-support :status="$support->status" /></li>
@@ -24,7 +24,6 @@
 
             <!-- Item Container -->
             <div class="flex flex-col gap-3 text-white">
-
                 @forelse ($replies as $reply)
                     <div class="flex flex-col gap-4 dark:bg-gray-900 rounded p-4">
                         <!-- Profile and Rating -->
@@ -41,16 +40,16 @@
 
                         <div class="flex justify-between">
                             <span>{{ $reply['created_at'] }}</span>
-                            {{-- @can('owner', $reply['user']['id']) --}}
-                            <form action="{{ route('replies.destroy', [$support->id, $reply['id']]) }}" method="post">
-                                @csrf()
-                                @method('DELETE')
-                                <button type="submit"
-                                    class="bg-red-500 hover:bg-red-400 text-white py-1 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">Deletar</button>
-                            </form>
-                            {{-- @else
+                            @can('owner', $reply['user']['id'])
+                                <form action="{{ route('replies.destroy', [$support->id, $reply['id']]) }}" method="post">
+                                    @csrf()
+                                    @method('DELETE')
+                                    <button type="submit"
+                                        class="bg-red-500 hover:bg-red-400 text-white py-1 px-4 border-b-4 border-red-700 hover:border-red-500 rounded">Deletar</button>
+                                </form>
+                            @else
                                 --
-                            @endcan --}}
+                            @endcan
                         </div>
                     </div>
                 @empty
@@ -69,10 +68,7 @@
                         </button>
                     </form>
                 </div>
-
-
             </div>
         </div>
     </div>
-
 @endsection

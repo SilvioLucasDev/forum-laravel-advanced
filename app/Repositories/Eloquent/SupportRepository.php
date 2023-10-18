@@ -7,6 +7,7 @@ use App\Dtos\Supports\UpdateSupportDTO;
 use App\Models\Support;
 use App\Repositories\Contracts\PaginationInterface;
 use App\Repositories\Contracts\SupportRepositoryInterface;
+use Illuminate\Support\Facades\Gate;
 use stdClass;
 
 class SupportRepository implements SupportRepositoryInterface
@@ -30,17 +31,18 @@ class SupportRepository implements SupportRepositoryInterface
 
     public function getAll(?string $filter): array
     {
-        return $this->supportModel->where(function ($query) use ($filter) {
-            if ($filter) {
-                $query->where('subject', $filter);
-                $query->orWhere('body', 'like', "%{$filter}%");
-            }
-        })->get()->toArray();
+        return $this->supportModel->whit('user')
+            ->where(function ($query) use ($filter) {
+                if ($filter) {
+                    $query->where('subject', $filter);
+                    $query->orWhere('body', 'like', "%{$filter}%");
+                }
+            })->get()->toArray();
     }
 
     public function findOne(string $id): ?stdClass
     {
-        $support = $this->supportModel->find($id);
+        $support = $this->supportModel->with('user')->find($id);
         if (! $support) {
             return null;
         }
@@ -57,8 +59,12 @@ class SupportRepository implements SupportRepositoryInterface
 
     public function update(UpdateSupportDTO $dto): ?stdClass
     {
-        if (! $support = $this->supportModel->find($dto->id)) {
+        $support = $this->supportModel->find($dto->id);
+        if (! $support) {
             return null;
+        }
+        if (Gate::denies('owner', $support->user->id)) {
+            abort(403, 'Not Authorized');
         }
         $support->update((array) $dto);
 
@@ -67,6 +73,10 @@ class SupportRepository implements SupportRepositoryInterface
 
     public function delete(string $id): void
     {
-        $this->supportModel->findOrFail($id)->delete();
+        $support = $this->supportModel->findOrFail($id);
+        if (Gate::denies('owner', $support->user->id)) {
+            abort(403, 'Not Authorized');
+        }
+        $support->delete();
     }
 }

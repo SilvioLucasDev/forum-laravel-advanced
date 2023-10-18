@@ -50,10 +50,16 @@
                                 </td>
 
                                 <td class="px-4 py-2 text-sm whitespace-nowrap flex">
-                                    <a href="{{ route('supports.edit', $support->id) }}"
-                                        class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg">
-                                        Editar
-                                    </a>
+                                    @can('owner', $support->user_id)
+                                        <a href="{{ route('supports.edit', $support->id) }}"
+                                            class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg">
+                                            Editar
+                                        </a>
+                                    @else
+                                        <span class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg">
+                                            ------
+                                        </span>
+                                    @endcan
                                     <a href="{{ route('replies.index', $support->id) }}"
                                         class="px-1 py-1 text-gray-500 transition-colors duration-200 rounded-lg">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
