@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\ReplySupportController;
 use App\Http\Controllers\Admin\SupportController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;

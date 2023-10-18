@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Models\Support;
+use App\Observers\SupportObserver;
 use App\Repositories\Eloquent\SupportRepository;
 use App\Repositories\SupportRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
@@ -13,7 +15,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
+        $this->app->bind(SupportRepositoryInterface::class, SupportRepository::class);
     }
 
     /**
@@ -21,6 +23,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $this->app->bind(SupportRepositoryInterface::class, SupportRepository::class);
+        Support::observe(SupportObserver::class);
     }
 }
