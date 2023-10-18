@@ -21,10 +21,10 @@ class ReplySupportService
 
     public function create(CreateReplyDTO $dto): stdClass
     {
-        $support = $this->repository->save($dto);
-        SupportRepliedEvent::dispatch($support);
+        $reply = $this->repository->save($dto);
+        SupportRepliedEvent::dispatch($reply);
 
-        return $support;
+        return $reply;
     }
 
     public function delete(string $id): void
