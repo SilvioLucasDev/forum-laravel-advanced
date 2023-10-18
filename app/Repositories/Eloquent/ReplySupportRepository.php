@@ -16,15 +16,15 @@ class ReplySupportRepository implements ReplySupportRepositoryInterface
 
     public function getAllBySupportId(string $id): array
     {
-        $replies = $this->replySupportModel->where('support_id', $id)->get();
+        $replies = $this->replySupportModel->with('user', 'support')->where('support_id', $id)->get();
 
         return $replies->toArray();
     }
 
     public function save(CreateReplyDTO $dto): stdClass
     {
-        $reply = $this->replySupportModel->create($dto);
+        $reply = $this->replySupportModel->create((array) $dto);
 
-        return (object) $reply;
+        return (object) $reply->toArray();
     }
 }

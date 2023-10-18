@@ -2,21 +2,19 @@
 
 namespace App\Dtos\Replies;
 
-use App\Http\Requests\StoreUpdateSupportRequest;
-
 class CreateReplyDTO
 {
     public function __construct(
-        public string $supportId,
-        public string $subject,
+        public string $support_id,
+        public string $content,
     ) {
     }
 
-    // public static function makeFromRequest(StoreUpdateSupportRequest $request)
-    // {
-    //     return new self(
-    //         $request->subject,
-    //         $request->body,
-    //     );
-    // }
+    public static function makeFromRequest(object $request): self
+    {
+        return new self(
+            $request->route('id'),
+            $request->content,
+        );
+    }
 }

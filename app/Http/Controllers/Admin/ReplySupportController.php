@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Dtos\Replies\CreateReplyDTO;
 use App\Http\Controllers\Controller;
 use App\Services\ReplySupportService;
 use App\Services\SupportService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\Request;
 
 class ReplySupportController extends Controller
 {
@@ -22,11 +25,16 @@ class ReplySupportController extends Controller
         }
         $replies = $this->replySupportService->getAllBySupportId($id);
 
-        dd($replies);
-
         return view('admin.supports.replies.index', [
             'support' => $support,
             'replies' => $replies,
         ]);
+    }
+
+    public function store(Request $request): RedirectResponse
+    {
+        $this->replySupportService->create(CreateReplyDTO::makeFromRequest($request));
+
+        return redirect()->route('replies.index', $request->route('id'))->with('message', 'Cadastrado com sucesso!');
     }
 }
