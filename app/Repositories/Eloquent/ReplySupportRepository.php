@@ -25,17 +25,19 @@ class ReplySupportRepository implements ReplySupportRepositoryInterface
     public function save(CreateReplyDTO $dto): stdClass
     {
         $reply = $this->replySupportModel->create((array) $dto);
-        $reply->load('user');
+        $reply->load('user', 'support');
 
         return (object) $reply->toArray();
     }
 
-    public function delete(string $id): void
+    public function delete(string $id): bool
     {
         $reply = $this->replySupportModel->findOrFail($id);
         if (Gate::denies('owner', $reply->user->id)) {
-            abort(403, 'Not Authorized');
+            return false;
         }
         $reply->delete();
+
+        return true;
     }
 }

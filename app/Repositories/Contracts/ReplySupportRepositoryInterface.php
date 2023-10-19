@@ -11,5 +11,5 @@ interface ReplySupportRepositoryInterface
 
     public function save(CreateReplyDTO $dto): stdClass;
 
-    public function delete(string $id): void;
+    public function delete(string $id): bool;
 }

@@ -19,7 +19,7 @@ interface SupportRepositoryInterface
 
     public function update(UpdateSupportDTO $dto): ?stdClass;
 
-    public function delete(string $id): void;
+    public function delete(string $id): bool;
 
     public function updateStatus(string $id, SupportStatusEnum $status): void;
 }

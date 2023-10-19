@@ -68,7 +68,7 @@ class SupportController extends Controller
         ]);
     }
 
-    public function update(StoreUpdateSupportRequest $request, Support $support, string $id): RedirectResponse
+    public function update(StoreUpdateSupportRequest $request, Support $support): RedirectResponse
     {
         $support = $this->supportService->update(UpdateSupportDTO::makeFromRequest($request));
         if (! $support) {
@@ -80,7 +80,10 @@ class SupportController extends Controller
 
     public function destroy(string $id): RedirectResponse
     {
-        $this->supportService->delete($id);
+        $result = $this->supportService->delete($id);
+        if (! $result) {
+            return back();
+        }
 
         return redirect()->route('supports.index')->with('message', 'Deletado com sucesso!');
     }

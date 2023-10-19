@@ -40,7 +40,10 @@ class ReplySupportController extends Controller
 
     public function destroy(string $supportId, string $replyId): RedirectResponse
     {
-        $this->replySupportService->delete($replyId);
+        $result = $this->replySupportService->delete($replyId);
+        if (! $result) {
+            return back();
+        }
 
         return redirect()->route('replies.index', $supportId)->with('message', 'Deletado com sucesso!');
     }

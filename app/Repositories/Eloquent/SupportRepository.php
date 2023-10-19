@@ -21,13 +21,15 @@ class SupportRepository implements SupportRepositoryInterface
     public function paginate(int $page, int $totalPerPage, ?string $filter): PaginationInterface
     {
         $result = $this->supportModel
-            ->with(['replies' => function ($query) {
-                $query->limit(4);
-                $query->latest();
-            }])
+            // ->with(['replies' => function ($query) {
+            //     $query->limit(4);
+            //     $query->latest();
+            //     $query->latest('user');
+            // }])
+            ->with('replies.user')
             ->where(function ($query) use ($filter) {
                 if ($filter) {
-                    $query->where('subject', $filter);
+                    $query->where('subject', 'like', "%{$filter}%");
                     $query->orWhere('body', 'like', "%{$filter}%");
                 }
             })->paginate($totalPerPage, ['*'], 'page', $page);
@@ -40,7 +42,7 @@ class SupportRepository implements SupportRepositoryInterface
         return $this->supportModel->whit('user')
             ->where(function ($query) use ($filter) {
                 if ($filter) {
-                    $query->where('subject', $filter);
+                    $query->where('subject', 'like', "%{$filter}%");
                     $query->orWhere('body', 'like', "%{$filter}%");
                 }
             })->get()->toArray();
@@ -70,20 +72,22 @@ class SupportRepository implements SupportRepositoryInterface
             return null;
         }
         if (Gate::denies('owner', $support->user->id)) {
-            abort(403, 'Not Authorized');
+            return null;
         }
         $support->update((array) $dto);
 
         return (object) $support->toArray();
     }
 
-    public function delete(string $id): void
+    public function delete(string $id): bool
     {
         $support = $this->supportModel->findOrFail($id);
         if (Gate::denies('owner', $support->user->id)) {
-            abort(403, 'Not Authorized');
+            return false;
         }
         $support->delete();
+
+        return true;
     }
 
     public function updateStatus(string $id, SupportStatusEnum $status): void

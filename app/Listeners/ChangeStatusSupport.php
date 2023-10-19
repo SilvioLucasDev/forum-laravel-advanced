@@ -5,6 +5,7 @@ namespace App\Listeners;
 use App\Enums\SupportStatusEnum;
 use App\Events\SupportRepliedEvent;
 use App\Services\SupportService;
+use Illuminate\Support\Facades\Gate;
 
 class ChangeStatusSupport
 {
@@ -22,10 +23,15 @@ class ChangeStatusSupport
     public function handle(SupportRepliedEvent $event): void
     {
         $reply = $event->reply();
+        if (Gate::allows('owner', $reply->support['user_id'])) {
+            $status = SupportStatusEnum::A;
+        } else {
+            $status = SupportStatusEnum::P;
+        }
 
         $this->supportService->updateStatus(
             $reply->support_id,
-            SupportStatusEnum::P
+            $status
         );
     }
 }

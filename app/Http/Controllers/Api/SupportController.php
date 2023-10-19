@@ -40,11 +40,13 @@ class SupportController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUpdateSupportRequest $request): JsonResource
+    public function store(StoreUpdateSupportRequest $request): JsonResponse
     {
         $support = $this->supportService->create(CreateSupportDTO::makeFromRequest($request));
 
-        return new SupportResource($support);
+        return (new SupportResource($support))
+            ->response()
+            ->setStatusCode(Response::HTTP_CREATED);
     }
 
     /**
@@ -89,7 +91,12 @@ class SupportController extends Controller
             ], Response::HTTP_NOT_FOUND);
         }
 
-        $this->supportService->delete($id);
+        $result = $this->supportService->delete($id);
+        if (! $result) {
+            return response()->json([
+                'error' => 'Unauthorized',
+            ], Response::HTTP_FORBIDDEN);
+        }
 
         return response()->json([], Response::HTTP_NO_CONTENT);
     }

@@ -48,9 +48,9 @@ class SupportService
         return $this->repository->update($dto);
     }
 
-    public function delete(string $id): void
+    public function delete(string $id): bool
     {
-        $this->repository->delete($id);
+        return $this->repository->delete($id);
     }
 
     public function updateStatus(string $id, SupportStatusEnum $status): void

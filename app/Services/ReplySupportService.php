@@ -27,8 +27,8 @@ class ReplySupportService
         return $reply;
     }
 
-    public function delete(string $id): void
+    public function delete(string $id): bool
     {
-        $this->repository->delete($id);
+        return $this->repository->delete($id);
     }
 }
