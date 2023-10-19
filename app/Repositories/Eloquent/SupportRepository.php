@@ -4,6 +4,7 @@ namespace App\Repositories\Eloquent;
 
 use App\Dtos\Supports\CreateSupportDTO;
 use App\Dtos\Supports\UpdateSupportDTO;
+use App\Enums\SupportStatusEnum;
 use App\Models\Support;
 use App\Repositories\Contracts\PaginationInterface;
 use App\Repositories\Contracts\SupportRepositoryInterface;
@@ -83,5 +84,12 @@ class SupportRepository implements SupportRepositoryInterface
             abort(403, 'Not Authorized');
         }
         $support->delete();
+    }
+
+    public function updateStatus(string $id, SupportStatusEnum $status): void
+    {
+        $this->supportModel->where('id', $id)->update([
+            'status' => $status->name,
+        ]);
     }
 }
