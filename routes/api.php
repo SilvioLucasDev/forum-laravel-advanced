@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Auth\AuthController;
+use App\Http\Controllers\Api\ReplySupportController;
 use App\Http\Controllers\Api\SupportController;
 use Illuminate\Support\Facades\Route;
 
@@ -22,4 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::post('/me', [AuthController::class, 'me']);
 
     Route::apiResource('/supports', SupportController::class);
+    Route::get('/supports/{id}/replies', [ReplySupportController::class, 'index']);
+    Route::post('/supports/{id}/replies', [ReplySupportController::class, 'store']);
+    Route::delete('/supports/replies/{id}', [ReplySupportController::class, 'destroy']);
 });
